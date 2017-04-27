@@ -13,8 +13,6 @@
 }
 
 .cbp-fwslider ul li {
-	-webkit-transform: translateZ(0);
-	-moz-transform: translateZ(0);
 	transform: translateZ(0);
 	float: left;
 	display: block;
@@ -64,7 +62,7 @@
 	left: 0px;
 }
 
-.cbp-fwdots {
+.cbp-fwslider .cbp-fwdots {
 	position: absolute;
 	bottom: 0px;
 	white-space: nowrap;
@@ -72,7 +70,7 @@
 	width: 100%;
 }
 
-.cbp-fwdots span {
+.cbp-fwslider .cbp-fwdots span {
 	display: inline-block;
 	width: 18px;
 	height: 18px;
@@ -82,14 +80,12 @@
 	cursor: pointer;
 }
 
-.cbp-fwdots span:hover {
+.cbp-fwslider .cbp-fwdots span:hover {
 	background: #999;
 }
 
-.cbp-fwdots span.cbp-fwcurrent {
+.cbp-fwslider .cbp-fwdots span.cbp-fwcurrent {
 	background: #47a3da;
 	box-shadow: 0 0 0 2px #47a3da;
-	-webkit-transition: box-shadow 0.2s ease-in-out;
-	-moz-transition: box-shadow 0.2s ease-in-out;
 	transition: box-shadow 0.2s ease-in-out;
 }
