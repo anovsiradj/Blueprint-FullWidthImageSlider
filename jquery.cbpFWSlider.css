@@ -42,17 +42,18 @@
 	width: 50px;
 	height: 100px;
 	background: #47a3da;
+	opacity: 0.4;
 	color: #fff;
 	font-size: 50px;
 	text-align: center;
 	margin-top: -50px;
 	line-height: 100px;
 	cursor: pointer;
-	font-weight: normal;
+	font-weight: bold;
 }
 
 .cbp-fwslider nav span:hover {
-	background: #378fc3;
+	opacity: 1;
 }
 
 .cbp-fwslider nav span.cbp-fwnext {
