@@ -12,9 +12,6 @@
 
 	'use strict';
 
-	// global
-	var Modernizr = window.Modernizr;
-
 	$.CBPFWSlider = function( options, element ) {
 		this.$el = $( element );
 		this._init( options );
@@ -45,30 +42,10 @@
 			this.$items = this.$list.children( 'li' );
 			// total number of items
 			this.itemsCount = this.$items.length;
-			// support for CSS Transitions & transforms
-			this.support = Modernizr.csstransitions && Modernizr.csstransforms;
-			this.support3d = Modernizr.csstransforms3d;
-			// transition end event name and transform name
-			// transition end event name
-			var transEndEventNames = {
-					'WebkitTransition' : 'webkitTransitionEnd',
-					'MozTransition' : 'transitionend',
-					'OTransition' : 'oTransitionEnd',
-					'msTransition' : 'MSTransitionEnd',
-					'transition' : 'transitionend'
-				},
-				transformNames = {
-					'WebkitTransform' : '-webkit-transform',
-					'MozTransform' : '-moz-transform',
-					'OTransform' : '-o-transform',
-					'msTransform' : '-ms-transform',
-					'transform' : 'transform'
-				};
 
-			if( this.support ) {
-				this.transEndEventName = transEndEventNames[ Modernizr.prefixed( 'transition' ) ] + '.cbpFWSlider';
-				this.transformName = transformNames[ Modernizr.prefixed( 'transform' ) ];
-			}
+			this.transEndEventName = 'transitionend.cbpFWSlider';
+			this.transformName = 'transform';
+
 			// current and old item´s index
 			this.current = 0;
 			this.old = 0;
@@ -76,10 +53,10 @@
 			this.isAnimating = false;
 			// the list (ul) will have a width of 100% x itemsCount
 			this.$list.css( 'width', 100 * this.itemsCount + '%' );
+
 			// apply the transition
-			if( this.support ) {
-				this.$list.css( 'transition', this.transformName + ' ' + this.options.speed + 'ms ' + this.options.easing );
-			}
+			this.$list.css( 'transition', this.transformName + ' ' + this.options.speed + 'ms ' + this.options.easing );
+
 			// each item will have a width of 100 / itemsCount
 			this.$items.css( 'width', 100 / this.itemsCount + '%' );
 			// add navigation arrows and the navigation dots if there is more than 1 item
@@ -138,23 +115,12 @@
 			this._toggleNavControls();
 			// translate value
 			var translateVal = -1 * this.current * 100 / this.itemsCount;
-			if( this.support ) {
-				this.$list.css( 'transform', this.support3d ? 'translate3d(' + translateVal + '%,0,0)' : 'translate(' + translateVal + '%)' );
-			}
-			else {
-				this.$list.css( 'margin-left', -1 * this.current * 100 + '%' );	
-			}
-			
+			this.$list.css( 'transform', 'translate3d(' + translateVal + '%,0,0)');
+
 			var transitionendfn = $.proxy( function() {
 				this.isAnimating = false;
 			}, this );
-
-			if( this.support ) {
-				this.$list.on( this.transEndEventName, $.proxy( transitionendfn, this ) );
-			}
-			else {
-				transitionendfn.call();
-			}
+			this.$list.on( this.transEndEventName, $.proxy( transitionendfn, this ) );
 
 		},
 		_toggleNavControls : function() {
@@ -191,9 +157,7 @@
 				this.$navDots.parent().remove();
 			}
 			this.$list.css( 'width', 'auto' );
-			if( this.support ) {
-				this.$list.css( 'transition', 'none' );
-			}
+			this.$list.css( 'transition', 'none' );
 			this.$items.css( 'width', 'auto' );
 
 		}
