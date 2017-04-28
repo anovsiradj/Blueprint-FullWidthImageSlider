@@ -12,6 +12,10 @@
 
 	'use strict';
 
+	var logError = function(message) {
+		console.error(message);
+	};
+
 	$.fn.CBPFWSlider = function(options, element) {
 		this.$el = $(element);
 		this._init(options);
@@ -22,7 +26,8 @@
 		// default transition speed (ms)
 		speed : 500,
 		// default transition easing
-		easing : 'ease'
+		easing : 'ease',
+		start: 0
 	};
 
 	$.fn.CBPFWSlider.prototype = {
@@ -47,7 +52,7 @@
 			this.transformName = 'transform';
 
 			// current and old item´s index
-			this.current = 0;
+			this.current = this.options.start < 0 ? 0 : this.options.start > (this.itemsCount-1) ? (this.itemsCount-1) : this.options.start;
 			this.old = 0;
 			// check if the list is currently moving
 			this.isAnimating = false;
@@ -62,9 +67,9 @@
 			// add navigation arrows and the navigation dots if there is more than 1 item
 			if(this.itemsCount > 1) {
 				// add navigation arrows (the previous arrow is not shown initially):
-				this.$navPrev = $('<span class="cbp-fwprev">&lsaquo;</span>').hide();
-				this.$navNext = $('<span class="cbp-fwnext">&rsaquo;</span>');
-				$('<nav/>').append(this.$navPrev, this.$navNext).appendTo(this.$el);
+				this.$navPrev = $($.parseHTML('<span class="cbp-fwprev">&lsaquo;</span>').shift()).hide();
+				this.$navNext = $($.parseHTML('<span class="cbp-fwnext">&rsaquo;</span>').shift());
+				$($.parseHTML('<nav/>').shift()).append(this.$navPrev, this.$navNext).appendTo(this.$el);
 				// add navigation dots
 				var dots = '';
 				for(var i = 0; i < this.itemsCount; ++i) {
@@ -72,7 +77,7 @@
 					var dot = i === this.current ? '<span class="cbp-fwcurrent"></span>' : '<span></span>';
 					dots += dot;
 				}
-				var navDots = $('<div class="cbp-fwdots"/>').append(dots).appendTo(this.$el);
+				var navDots = $($.parseHTML('<div class="cbp-fwdots"/>').shift()).append($.parseHTML(dots)).appendTo(this.$el);
 				this.$navDots = navDots.children('span');
 			}
 		},
@@ -80,12 +85,13 @@
 		_initEvents : function() {
 			var self = this;
 			if(this.itemsCount > 1) {
-				this.$navPrev.on( 'click.cbpFWSlider', $.proxy(this._navigate, this, 'previous'));
-				this.$navNext.on( 'click.cbpFWSlider', $.proxy(this._navigate, this, 'next'));
-				this.$navDots.on( 'click.cbpFWSlider', function() {
+				this.$navPrev.on('click.cbpFWSlider', $.proxy(this._navigate, this, 'previous'));
+				this.$navNext.on('click.cbpFWSlider', $.proxy(this._navigate, this, 'next'));
+				this.$navDots.on('click.cbpFWSlider', function() {
 					self._jump($(this).index());
 				});
 			}
+			this._slide();
 		},
 
 		_navigate : function(direction) {
@@ -152,10 +158,6 @@
 			this.$list.css('transition', 'none');
 			this.$items.css('width', 'auto');
 		}
-	};
-
-	var logError = function(message) {
-		console.error(message);
 	};
 
 	$.fn.cbpFWSlider = function(options) {
