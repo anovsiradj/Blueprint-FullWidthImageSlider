@@ -1,7 +1,18 @@
-Blueprint: Full Width Image Slider
-=========
+# Blueprint: Full Width Image Slider
 
 A very simple 100% width slider that scales down to mobile.
+
+# Usage
+
+```js
+$(selector).CBPFWSlider({
+	start: 0, // first image to show (zero-based),
+	speed : 500, // transition speed in milisecond
+	easing : 'ease' // css transition easing
+});
+```
+
+---
 
 [article on Codrops](http://tympanus.net/codrops/?p=13665)
 
